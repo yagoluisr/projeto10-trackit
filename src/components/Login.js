@@ -14,7 +14,7 @@ export default function Login() {
 
                 <input 
                 placeholder="Senha"
-                type="text"
+                type="password"
                 ></input>
 
                 <button type="submit">Entrar</button>
