@@ -7,6 +7,9 @@ function register(data) {
     return promise;
 }
 
+function login(data) {
+    const promise = axios.post(`${BASE_URL}/auth/login`, data);
+    return promise;
+}
 
-
-export { register }
+export { register, login }

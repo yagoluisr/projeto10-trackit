@@ -1,12 +1,37 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from './Assets/TrackIt.svg'
+import { login } from './Services/Service.js';
+import { useState } from 'react';
+
 
 
 export default function Login() {
+    const navigate = useNavigate();
 
-    function login (e) {
+    const [data, setData] = useState({
+        email: '',
+        password: ''
+    });
+    console.log(data);
+
+    function updatedata(e) {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    function handleLogin (e) {
 		e.preventDefault();
+        login(data)
+        .then(res => {
+            console.log(res.data);
+            navigate('/habitos')
+        })
+        .catch(() => {
+            alert('E-mail e/ou senha inválido')
+        })
 
     }
 
@@ -14,15 +39,21 @@ export default function Login() {
         <Page>
             <Logo />
             
-            <Form onSubmit={login}>
+            <Form onSubmit={handleLogin}>
                 <input 
+                name="email"
                 placeholder="E-mail"
                 type="text"
+                value={data.email}
+                onChange={updatedata}
                 ></input>
 
                 <input 
+                name="password"
                 placeholder="Senha"
                 type="password"
+                value={data.password}
+                onChange={updatedata}
                 ></input>
 
                 <button type="submit">Entrar</button>
