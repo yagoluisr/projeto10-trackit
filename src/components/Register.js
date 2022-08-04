@@ -1,37 +1,88 @@
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from './Assets/TrackIt.svg'
+import { useState } from 'react';
+import { register } from './Services/Service.js';
+
 
 export default function Register() {
+    const navigate = useNavigate();
+
+    const [data, setData] = useState({
+        email: '',
+        password: ''
+    })
+
+    function updatedata(e) {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    function handleRegister (e) {
+		e.preventDefault();
+        console.log(data)
+
+        register(data)
+        .then(res => {
+            console.log(res.data)
+            navigate('/');
+        })
+        .catch(() => {
+            alert('Erro ao cadastrar, por favor tente novamente')
+        })
+        
+    }
+
     return (
         <UserRegister>
             <Logo />
 
-            <Form>
+            <Form onSubmit={handleRegister}>
                 <input 
+                name="email"
                 placeholder="E-mail"
-                type="text"
+                type="email"
+                value={data.email}
+                onChange={updatedata}
+                // required
                 ></input>
 
                 <input 
+                name="password"
                 placeholder="Senha"
                 type="password"
+                value={data.password}
+                onChange={updatedata}
+                // required
                 ></input>
                 
                 <input 
+                name="name"
                 placeholder="Nome"
                 type="text"
+                value={data.name}
+                onChange={updatedata}
+                // required
                 ></input>
 
                 <input 
+                name="image"
                 placeholder="Foto"
                 type="text"
+                value={data.image}
+                onChange={updatedata}
+                // required
                 ></input>
 
                 <button type="submit">Cadastrar</button>
 
             </Form>
 
+            <Link to='/'>
             <span>Não tem uma conta? Cadastre-se!</span>
+            </Link>
 
         </ UserRegister>
     )
@@ -59,6 +110,7 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     margin-top: 33px;
+    margin-bottom: 25px;
 
     input {
         width: auto;

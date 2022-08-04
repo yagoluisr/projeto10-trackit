@@ -1,12 +1,20 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from './Assets/TrackIt.svg'
 
+
 export default function Login() {
+
+    function login (e) {
+		e.preventDefault();
+
+    }
+
     return (
         <Page>
             <Logo />
             
-            <Form>
+            <Form onSubmit={login}>
                 <input 
                 placeholder="E-mail"
                 type="text"
@@ -20,7 +28,10 @@ export default function Login() {
                 <button type="submit">Entrar</button>
             </Form>
             
-            <span>Não tem uma conta? Cadastre-se!</span>
+            <Link to="/cadastro">
+                <span>Não tem uma conta? Cadastre-se!</span>
+            </Link>
+
         </Page>
     )
 }
@@ -48,6 +59,7 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     margin-top: 33px;
+    margin-bottom: 25px;
 
     input {
         width: auto;
