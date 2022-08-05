@@ -18,7 +18,7 @@ export default function Login() {
         email: '',
         password: ''
     });
-    console.log(data);
+    //console.log(data);
 
     function updatedata(e) {
         setData({

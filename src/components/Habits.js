@@ -2,12 +2,25 @@ import styled from 'styled-components';
 import Footer from '../Footer';
 import Header from './Header';
 import MyHabits from './MyHabits';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Habit from './Habit';
+import { getHabits } from './Services/Service.js';
 
+
+import UserContext from './contexts/UserContext';
+import SmallHabit from './SmallHabit';
 
 export default function Habits() {
-    //const [habit, setHabit] = useState([]);
+    const { token } = useContext(UserContext);
+    const [habits, setHabits] = useState([]);
+
+    useEffect( () => {
+        getHabits(token).then(res => {
+            console.log(res.data);
+            setHabits(res.data);
+        })        
+    }, [])
+    
 
     return (
         <>
@@ -16,6 +29,10 @@ export default function Habits() {
             <Container>
                 <MyHabits />
                 <Habit />
+                
+                {habits.map((habit, key) => (
+                    <SmallHabit key={key.id} name={habit.name} days={habit.days} habit={habit} habits={habits}/>
+                ))}
 
                     <span>
                         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!

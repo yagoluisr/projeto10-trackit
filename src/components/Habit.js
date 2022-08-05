@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { postHabit } from './Services/Service';
+import UserContext from './contexts/UserContext';
+
 
 export default function Habit() {
+    const { token } = useContext(UserContext);
+
     const [habitName, setHabitName] = useState('') 
 
     const [week, setWeek] = useState ([
@@ -41,7 +45,7 @@ export default function Habit() {
             days
         }
 
-        postHabit(body).then( res => 
+        postHabit(body, token).then( res => 
             console.log(res.data)
         )
 
@@ -54,7 +58,7 @@ export default function Habit() {
             <input placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)} required></input>
 
             <ul>
-                {week.map(d => (
+                {week.map((d, key) => (
                     <DaysWeek selected={d.selected} key={d.id} onClick={() => select(d.id)}>{d.day}</DaysWeek>
                 ))}
                 
@@ -93,7 +97,7 @@ const Container = styled.form`
     }
 `
 
-const DaysWeek = styled.li`
+export const DaysWeek = styled.li`
         height: 30px;
         width: 30px;
         display: flex;
