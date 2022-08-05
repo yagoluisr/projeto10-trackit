@@ -33,7 +33,7 @@ export default function Login() {
         .then(res => {
             console.log(res.data);
             setToken(res.data.token)
-            navigate('/habitos')
+            navigate('/hoje')
         })
         .catch(() => {
             alert('E-mail e/ou senha inválido')

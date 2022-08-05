@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+
 export default function Footer() {
+
     return (
         <FooterBar>
-            <div>Hábitos</div>
-            <div>Hoje</div>
+            <Link to='/habitos'> <div>Hábitos</div> </Link>
+            <Link to='/hoje'> <div>Hoje</div> </Link>
             <div>Histórico</div>
         </FooterBar>
     )
@@ -22,6 +25,10 @@ const FooterBar = styled.div`
     left: 0;
     box-sizing: border-box;
     background: #FFFFFF;
+
+    a {
+        text-decoration: none;
+    }
 
     div {
         font-weight: 400;

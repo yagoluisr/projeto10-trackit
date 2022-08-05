@@ -39,6 +39,10 @@ function delHabit(idHabit, token) {
     return promise;
 }
 
+function searchHabits(token) {
+    const config = creatConfig(token);
+    const promise = axios.get(`${BASE_URL}/habits/today`, config);
+    return promise;
+}
 
-
-export { register, login, postHabit, getHabits, delHabit }
+export { register, login, postHabit, getHabits, delHabit , searchHabits};

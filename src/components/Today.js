@@ -2,9 +2,25 @@ import Footer from "../Footer"
 import Header from "./Header"
 import styled from 'styled-components';
 import { ReactComponent as Check } from './Assets/Check.svg'; 
+import { useContext, useEffect, useState } from "react";
+import UserContext from "./contexts/UserContext";
+import { searchHabits } from "./Services/Service";
+
 
 
 export default function Today() {
+    const { token } = useContext(UserContext);
+
+    const [habit, setHabit] = useState([])
+
+    useEffect(() => {
+        searchHabits(token)
+        .then( res => {
+            console.log(res.data);
+            setHabit(res.data)
+        })
+    }, [])
+
     return (
         <Wrapper>
             <Header />
@@ -14,14 +30,15 @@ export default function Today() {
                 <p>Nenhum hábito concluído ainda</p>
             </DayWeek>
 
-            <HabitDay>
-                <span>Ler 1 capítulo de livro</span>
-                <p>Sequência atual: 3 dias</p>
-                <p>Seu recorde: 5 dias</p>
+            {habit.map(dayHabit => (
+                    <HabitDay>
+                        <span>{dayHabit.name}</span>
+                        <p>Sequência atual: {dayHabit.currentSequence} dias</p>
+                        <p>Seu recorde: {dayHabit.highestSequence} dias</p>
+                        <div><Check /></div>
+                    </HabitDay>
+            ))}
 
-                <div><Check /></div>
-            </HabitDay>
-            
             <Footer />
         </Wrapper>
         
@@ -63,7 +80,7 @@ const HabitDay = styled.div`
     justify-content: center;
     padding: 14px;
     border-radius: 5px;
-    margin: 0 auto ;
+    margin: 0 auto 10px auto;
     background-color: #FFFFFF;
     position: relative;
 

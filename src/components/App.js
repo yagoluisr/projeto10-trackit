@@ -17,7 +17,7 @@ import Today from './Today';
 
 export default function App() {
     const [token, setToken] = useState('');
-    console.log(token);
+    //console.log(token);
 
     return (
         <BrowserRouter>
