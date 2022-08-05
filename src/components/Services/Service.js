@@ -39,4 +39,6 @@ function delHabit(idHabit, token) {
     return promise;
 }
 
+
+
 export { register, login, postHabit, getHabits, delHabit }
