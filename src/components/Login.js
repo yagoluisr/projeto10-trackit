@@ -2,11 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from './Assets/TrackIt.svg'
 import { login } from './Services/Service.js';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
+import UserContext from './contexts/UserContext';
+
 
 
 
 export default function Login() {
+    const { token, setToken } = useContext(UserContext);
+
     const navigate = useNavigate();
 
     const [data, setData] = useState({
@@ -27,6 +32,7 @@ export default function Login() {
         login(data)
         .then(res => {
             console.log(res.data);
+            setToken(res.data.token)
             navigate('/habitos')
         })
         .catch(() => {
