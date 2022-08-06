@@ -4,7 +4,7 @@ import { postHabit } from './Services/Service';
 import UserContext from './contexts/UserContext';
 
 
-export default function Habit() {
+export default function Habit({toggle, setToggle}) {
     const { token } = useContext(UserContext);
 
     const [habitName, setHabitName] = useState('') 
@@ -49,6 +49,8 @@ export default function Habit() {
             console.log(res.data)
         )
 
+        setToggle(!toggle);
+
     }
     
     
@@ -58,13 +60,13 @@ export default function Habit() {
             <input placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)} required></input>
 
             <ul>
-                {week.map((d, key) => (
+                {week.map(d => (
                     <DaysWeek selected={d.selected} key={d.id} onClick={() => select(d.id)}>{d.day}</DaysWeek>
                 ))}
-                
             </ul>
+
             <Buttons>
-                <div>Cancelar</div>
+                <div onClick={ () => setToggle(!toggle) }>Cancelar</div>
                 <button>Salvar</button>
             </Buttons>
         </Container>

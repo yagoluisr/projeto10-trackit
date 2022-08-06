@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-export default function Header() {
+export default function Header({image}) {
     return (
         <Head>
             <div>TrackIt</div>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh18zC6hawV9kIyB1Lqfaow7H-oQJFopBmCw&usqp=CAU" alt="imagemPerfil"/>
+            <img src={image} alt="imagemPerfil"/>
         </Head>
     )
 }
@@ -15,6 +15,10 @@ const Head = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
     padding: 0 18px;
     background: #126BA5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);

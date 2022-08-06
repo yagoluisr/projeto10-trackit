@@ -3,22 +3,22 @@ import styled from 'styled-components';
 import { ReactComponent as Logo } from './Assets/TrackIt.svg'
 import { login } from './Services/Service.js';
 import { useState, useContext } from 'react';
+import { ThreeDots } from 'react-loader-spinner';
 
 import UserContext from './contexts/UserContext';
 
 
-
-
 export default function Login() {
     const { token, setToken } = useContext(UserContext);
+    const { image, setImage } = useContext(UserContext);
 
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
 
     const [data, setData] = useState({
         email: '',
         password: ''
     });
-    //console.log(data);
 
     function updatedata(e) {
         setData({
@@ -29,14 +29,17 @@ export default function Login() {
 
     function handleLogin (e) {
 		e.preventDefault();
+        setLoading(!loading);
         login(data)
         .then(res => {
             console.log(res.data);
-            setToken(res.data.token)
+            setToken(res.data.token);
+            setImage(res.data.image);
             navigate('/hoje')
         })
         .catch(() => {
-            alert('E-mail e/ou senha inválido')
+            setLoading(false);
+            alert('E-mail e/ou senha inválido');
         })
 
     }
@@ -45,13 +48,14 @@ export default function Login() {
         <Page>
             <Logo />
             
-            <Form onSubmit={handleLogin}>
+            <Form onSubmit={handleLogin} disabled={loading}>
                 <input 
                 name="email"
                 placeholder="E-mail"
                 type="text"
                 value={data.email}
                 onChange={updatedata}
+                disabled={loading}
                 ></input>
 
                 <input 
@@ -60,9 +64,25 @@ export default function Login() {
                 type="password"
                 value={data.password}
                 onChange={updatedata}
+                disabled={loading}
                 ></input>
 
-                <button type="submit">Entrar</button>
+                <button type="submit">
+                { loading === false ? 
+                "Entrar"
+                : 
+                <ThreeDots
+                    height = "80"
+                    width = "80"
+                    radius = "9"
+                    color = '#ffffff'
+                    ariaLabel = 'three-dots-loading'     
+                    wrapperStyle
+                    wrapperClass
+                /> }
+                </button> 
+                
+                
             </Form>
             
             <Link to="/cadastro">
@@ -103,7 +123,7 @@ const Form = styled.form`
         height: 45px;
         padding-left: 11px;
         margin-bottom: 8px;
-        background: #FFFFFF;
+        background: ${ props => props.disabled ? '#D4D4D4' : '#FFFFFF' };
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         

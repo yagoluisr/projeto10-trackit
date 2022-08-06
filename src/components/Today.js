@@ -9,6 +9,7 @@ import { postCheck, postUnCheck, searchHabits } from "./Services/Service";
 
 export default function Today() {
     const { token } = useContext(UserContext);
+    const { image } = useContext(UserContext);
 
     const [habit, setHabit] = useState([])
     //const [done, setDone] = useState([]);
@@ -51,19 +52,15 @@ export default function Today() {
         })
     }
 
-    
-
-    
-
     return (
+        <>
+        <Header image={image}/>
         <Wrapper>
-            <Header />
+            
 
             <DayWeek>
                 <span>Segunda, 17/05</span>
-                {done.length === 0 ? <p>Nenhum hábito concluído ainda</p> : <h6>{result}% dos hábitos concluídos</h6> }
-                    
-                
+                {done.length === 0 ? <p>Nenhum hábito concluído ainda</p> : <h6>{result}% dos hábitos concluídos</h6> }  
             </DayWeek>
 
             {habit.map(dayHabit => (
@@ -76,19 +73,17 @@ export default function Today() {
             ))}
             <Footer />
         </Wrapper>
+        </>
     )
 }
 
-// const Color = styled.h6`
-//     color: ${props => props.habit ? '#8FC549' : '#666666' };
-// `
-
 const Wrapper = styled.div`
+    height: 100vh;
     background-color: #F2F2F2;
-    padding-bottom: 100px;
+    padding-top: 70px;
 `
 
-const DayWeek = styled.div`
+export const DayWeek = styled.div`
     height: 80px;
     width: 100%;
     padding: 18px;
@@ -163,8 +158,4 @@ const HabitDay = styled.div`
         border: 1px solid #E7E7E7;
         border-radius: 5px;
     }
-`
-
-const Container = styled.div`
-    
 `

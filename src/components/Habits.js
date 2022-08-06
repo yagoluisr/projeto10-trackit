@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 import Footer from '../Footer';
 import Header from './Header';
-//import MyHabits from './MyHabits';
 import { useState, useContext, useEffect } from 'react';
 import Habit from './Habit';
 import { getHabits } from './Services/Service.js';
-
 
 import UserContext from './contexts/UserContext';
 import SmallHabit from './SmallHabit';
 
 export default function Habits() {
     const { token } = useContext(UserContext);
+    const { image } = useContext(UserContext);
+
     const [habits, setHabits] = useState([]);
     const [toggle, setToggle] = useState(false);
 
@@ -25,14 +25,14 @@ export default function Habits() {
 
     return (
         <>
-            <Header />
+            <Header image={image}/>
             <MyHabits>
                 <div>Meus hábitos</div>
                 <Add onClick={ () => setToggle(!toggle) }><span>+</span></Add>
             </MyHabits>
 
             <Container>
-                {toggle ? <Habit /> : ''}
+                {toggle ? <Habit toggle={toggle} setToggle={setToggle}/> : ''}
                 
                 {habits.map((habit) => (
                     <SmallHabit key={habit.id} name={habit.name} days={habit.days} habit={habit} habits={habits}/>
@@ -54,6 +54,7 @@ const MyHabits = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: 100px;
     box-sizing: border-box;
     background-color: #F2F2F2;
 
@@ -84,11 +85,12 @@ const Add = styled.div`
 `
 
 const Container = styled.div`
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
+    padding-top: 30px;
     padding-bottom: 100px;
     background-color: #f2f2f2;
     

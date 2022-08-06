@@ -8,7 +8,7 @@ export default function Footer() {
         <FooterBar>
             <Link to='/habitos'> <div>Hábitos</div> </Link>
             <Link to='/hoje'> <div>Hoje</div> </Link>
-            <div>Histórico</div>
+            <Link to='/historico'><div>Histórico</div></Link>
         </FooterBar>
     )
 }
