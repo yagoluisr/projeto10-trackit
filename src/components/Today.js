@@ -11,6 +11,8 @@ export default function Today() {
     const { token } = useContext(UserContext);
 
     const [habit, setHabit] = useState([])
+    //const [done, setDone] = useState([]);
+    
 
     useEffect(() => {
         searchHabits(token)
@@ -20,12 +22,22 @@ export default function Today() {
         })
     }, []);
 
+
+        const done = habit.filter(obj => (
+            obj.done
+        ))
+        console.log(done);
+    
+
+        let percentage = (done.length/habit.length)*100;
+        let result = Math.ceil(percentage);
+
     function checkHabit(checkHabit, token) {
-        console.log(token);
         console.log(checkHabit);
         postCheck(checkHabit, token)
         .then( () => {
-            console.log(' !!');
+            console.log('CHECK !!');
+            setHabit(habit);
         })
     }
 
@@ -34,10 +46,14 @@ export default function Today() {
         console.log(checkHabit);
         postUnCheck(checkHabit, token)
         .then( () => {
-            console.log('FUNCIONA !!');
+            console.log('UNCHECK !!');
+            setHabit(habit);
         })
     }
 
+    
+
+    
 
     return (
         <Wrapper>
@@ -45,27 +61,31 @@ export default function Today() {
 
             <DayWeek>
                 <span>Segunda, 17/05</span>
-                <p>Nenhum hábito concluído ainda</p>
+                {done.length === 0 ? <p>Nenhum hábito concluído ainda</p> : <h6>{result}% dos hábitos concluídos</h6> }
+                    
+                
             </DayWeek>
 
             {habit.map(dayHabit => (
-                    <HabitDay habit={dayHabit.done} key={dayHabit.id}>
+                    <HabitDay habit={dayHabit.done} seq={dayHabit.currentSequence} record={dayHabit.highestSequence} key={dayHabit.id} >
                         <span>{dayHabit.name}</span>
-                        <p>Sequência atual: {dayHabit.currentSequence} dias</p>
-                        <p>Seu recorde: {dayHabit.highestSequence} dias</p>
-                        <div><Check onClick={ dayHabit.done ? (() => uncheck(dayHabit.id, token)) : () => checkHabit(dayHabit.id, token) }/></div>
+                        <p>Sequência atual: <strong>{dayHabit.currentSequence} dias</strong></p>
+                        <p>Seu recorde: <strong>{dayHabit.highestSequence} dias</strong></p>
+                        <div onClick={ dayHabit.done ? (() => uncheck(dayHabit.id, token)) : () => checkHabit(dayHabit.id, token) }><Check /></div>
                     </HabitDay>
             ))}
-
             <Footer />
         </Wrapper>
-        
     )
 }
 
+// const Color = styled.h6`
+//     color: ${props => props.habit ? '#8FC549' : '#666666' };
+// `
+
 const Wrapper = styled.div`
     background-color: #F2F2F2;
-    height: 100vh;
+    padding-bottom: 100px;
 `
 
 const DayWeek = styled.div`
@@ -88,6 +108,13 @@ const DayWeek = styled.div`
         line-height: 23px;
         color: #BABABA;
     }
+
+    h6 {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 23px;
+        color: #8FC549;
+    }
 `
 
 const HabitDay = styled.div`
@@ -101,6 +128,11 @@ const HabitDay = styled.div`
     margin: 0 auto 10px auto;
     background-color: #FFFFFF;
     position: relative;
+    box-sizing: border-box;
+
+    strong {
+        color: ${props => props.habit || props.seq > props.record ? '#8FC549' : '#666666' };
+    }
 
     span {
         font-weight: 400;
@@ -116,6 +148,7 @@ const HabitDay = styled.div`
         font-size: 13px;
         line-height: 17px;
         color: #666666;
+        //${props => props.habit ? '#8FC549' : '#666666' };
     }
 
     div {
@@ -130,4 +163,8 @@ const HabitDay = styled.div`
         border: 1px solid #E7E7E7;
         border-radius: 5px;
     }
+`
+
+const Container = styled.div`
+    
 `

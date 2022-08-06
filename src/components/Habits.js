@@ -30,8 +30,8 @@ export default function Habits() {
                 <MyHabits />
                 <Habit />
                 
-                {habits.map((habit, key) => (
-                    <SmallHabit key={key.id} name={habit.name} days={habit.days} habit={habit} habits={habits}/>
+                {habits.map((habit) => (
+                    <SmallHabit key={habit.id} name={habit.name} days={habit.days} habit={habit} habits={habits}/>
                 ))}
 
                     <span>
@@ -45,11 +45,12 @@ export default function Habits() {
 }
 
 const Container = styled.div`
-    min-height: 90vh;
+    min-height: 100vh;
     width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
+    padding-bottom: 100px;
     background-color: #f2f2f2;
     
     span {

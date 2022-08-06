@@ -21,7 +21,7 @@ export default function SmallHabit({name, habit}) {
 
     
     const idHabit = habit.id;
-    console.log(idHabit);
+    //console.log(idHabit);
 
         const newWeek = week.map(d => {
             if(habit.days.includes(d.id)){
