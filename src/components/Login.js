@@ -56,6 +56,7 @@ export default function Login() {
                 value={data.email}
                 onChange={updatedata}
                 disabled={loading}
+                required
                 ></input>
 
                 <input 
@@ -65,9 +66,10 @@ export default function Login() {
                 value={data.password}
                 onChange={updatedata}
                 disabled={loading}
+                required
                 ></input>
 
-                <button type="submit">
+                <button type="submit" disabled={loading} >
                 { loading === false ? 
                 "Entrar"
                 : 
@@ -118,6 +120,7 @@ const Form = styled.form`
     margin-top: 33px;
     margin-bottom: 25px;
 
+    
     input {
         width: auto;
         height: 45px;
@@ -126,7 +129,10 @@ const Form = styled.form`
         background: ${ props => props.disabled ? '#D4D4D4' : '#FFFFFF' };
         border: 1px solid #D5D5D5;
         border-radius: 5px;
-        
+
+        &:disabled {
+        opacity: 0.6;
+        }
     }
 
     button[type=submit] {
@@ -143,6 +149,10 @@ const Form = styled.form`
         border: 0;
         border: 1px solid #D5D5D5;
         outline: unset;
+
+        &:disabled {
+        opacity: 0.6;
+        }
 }
 `
 

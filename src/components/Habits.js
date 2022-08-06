@@ -26,9 +26,12 @@ export default function Habits() {
     return (
         <>
             <Header image={image}/>
+
             <MyHabits>
                 <div>Meus hábitos</div>
-                <Add onClick={ () => setToggle(!toggle) }><span>+</span></Add>
+                <Add onClick={ () => setToggle(!toggle) }>
+                    <span>+</span>
+                </Add>
             </MyHabits>
 
             <Container>

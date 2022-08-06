@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { ReactComponent as Logo } from './Assets/TrackIt.svg'
 import { useState } from 'react';
 import { register } from './Services/Service.js';
-
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function Register() {
     const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true);
 
     const [data, setData] = useState({
         email: '',
@@ -23,13 +25,14 @@ export default function Register() {
     function handleRegister (e) {
 		e.preventDefault();
         console.log(data)
-
+        setLoading(!loading);
         register(data)
         .then(res => {
             console.log(res.data)
             navigate('/');
         })
         .catch(() => {
+            setLoading(false);
             alert('Erro ao cadastrar, por favor tente novamente')
         })
         
@@ -39,14 +42,15 @@ export default function Register() {
         <UserRegister>
             <Logo />
 
-            <Form onSubmit={handleRegister}>
+            <Form onSubmit={handleRegister} disabled={loading}>
                 <input 
                 name="email"
                 placeholder="E-mail"
                 type="email"
                 value={data.email}
                 onChange={updatedata}
-                // required
+                disabled={loading}
+                required
                 ></input>
 
                 <input 
@@ -55,7 +59,8 @@ export default function Register() {
                 type="password"
                 value={data.password}
                 onChange={updatedata}
-                // required
+                disabled={loading}
+                required
                 ></input>
                 
                 <input 
@@ -64,7 +69,8 @@ export default function Register() {
                 type="text"
                 value={data.name}
                 onChange={updatedata}
-                // required
+                disabled={loading}
+                required
                 ></input>
 
                 <input 
@@ -73,10 +79,23 @@ export default function Register() {
                 type="text"
                 value={data.image}
                 onChange={updatedata}
-                // required
+                disabled={loading}
+                required
                 ></input>
 
-                <button type="submit">Cadastrar</button>
+                <button type="submit" disabled={loading} >
+                    { !loading ? "Cadastrar" : <ThreeDots
+                    height = "80"
+                    width = "80"
+                    radius = "9"
+                    color = '#ffffff'
+                    ariaLabel = 'three-dots-loading'     
+                    wrapperStyle
+                    wrapperClass
+                /> }
+                    </button>
+
+                
 
             </Form>
 
@@ -117,10 +136,13 @@ const Form = styled.form`
         height: 45px;
         padding-left: 11px;
         margin-bottom: 8px;
-        background: #FFFFFF;
+        background: ${ props => props.disabled ? '#D4D4D4' : '#FFFFFF' };
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         
+        &:disabled {
+            opacity: 0.7;
+        }
     }
 
     button[type=submit] {
@@ -137,6 +159,10 @@ const Form = styled.form`
         border: 0;
         border: 1px solid #D5D5D5;
         outline: unset;
+
+        &:disabled {
+            opacity: 0.7;
+        }
 }
 `
 
