@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 export default function MyHabits() {
     return (
-        <Header>
+        <Abc>
             <div>Meus hábitos</div>
             <Add><span>+</span></Add>
-        </Header>
+        </Abc>
     )
 }
 
-const Header = styled.div`
+const Abc = styled.div`
     height: 75px;
     width: 100%;
     padding: 0 18px;
