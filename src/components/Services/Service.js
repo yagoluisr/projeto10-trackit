@@ -41,8 +41,21 @@ function delHabit(idHabit, token) {
 
 function searchHabits(token) {
     const config = creatConfig(token);
-    const promise = axios.get(`${BASE_URL}/habits/today`, config);
+    const promise = axios.get(`${BASE_URL}/habits/today`, config );
     return promise;
 }
 
-export { register, login, postHabit, getHabits, delHabit , searchHabits};
+function postCheck(idHabit, token) {
+    const body = {};
+    const config = creatConfig(token);
+    const promise = axios.post(`${BASE_URL}/habits/${idHabit}/check`,body , config );
+    return promise;
+}
+
+function postUnCheck(idHabit, token) {
+    const config = creatConfig(token);
+    const promise = axios.post(`${BASE_URL}/habits/${idHabit}/uncheck`,{} , config );
+    return promise;
+}
+
+export { register, login, postHabit, getHabits, delHabit, searchHabits, postCheck, postUnCheck};

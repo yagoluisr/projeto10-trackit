@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { ReactComponent as Check } from './Assets/Check.svg'; 
 import { useContext, useEffect, useState } from "react";
 import UserContext from "./contexts/UserContext";
-import { searchHabits } from "./Services/Service";
-
+import { postCheck, postUnCheck, searchHabits } from "./Services/Service";
 
 
 export default function Today() {
@@ -19,7 +18,26 @@ export default function Today() {
             console.log(res.data);
             setHabit(res.data)
         })
-    }, [])
+    }, []);
+
+    function checkHabit(checkHabit, token) {
+        console.log(token);
+        console.log(checkHabit);
+        postCheck(checkHabit, token)
+        .then( () => {
+            console.log(' !!');
+        })
+    }
+
+    function uncheck(checkHabit, token) {
+        console.log(token);
+        console.log(checkHabit);
+        postUnCheck(checkHabit, token)
+        .then( () => {
+            console.log('FUNCIONA !!');
+        })
+    }
+
 
     return (
         <Wrapper>
@@ -31,11 +49,11 @@ export default function Today() {
             </DayWeek>
 
             {habit.map(dayHabit => (
-                    <HabitDay>
+                    <HabitDay habit={dayHabit.done} key={dayHabit.id}>
                         <span>{dayHabit.name}</span>
                         <p>Sequência atual: {dayHabit.currentSequence} dias</p>
                         <p>Seu recorde: {dayHabit.highestSequence} dias</p>
-                        <div><Check /></div>
+                        <div><Check onClick={ dayHabit.done ? (() => uncheck(dayHabit.id, token)) : () => checkHabit(dayHabit.id, token) }/></div>
                     </HabitDay>
             ))}
 
@@ -108,7 +126,7 @@ const HabitDay = styled.div`
         align-items: center;
         position: absolute;
         right: 15px;
-        background: #EBEBEB;
+        background-color: ${props => props.habit ? '#8FC549' : '#BABABA'};
         border: 1px solid #E7E7E7;
         border-radius: 5px;
     }
