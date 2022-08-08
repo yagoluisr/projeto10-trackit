@@ -7,7 +7,6 @@ import { ThreeDots } from 'react-loader-spinner';
 
 import UserContext from './contexts/UserContext';
 
-
 export default function Login() {
     const { token, setToken } = useContext(UserContext);
     const { image, setImage } = useContext(UserContext);

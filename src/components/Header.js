@@ -29,6 +29,7 @@ const Head = styled.div`
         font-size: 39px;
         line-height: 49px;
         color: #ffffff;
+        font-family: 'Playball', cursive;
     }
 
     img {

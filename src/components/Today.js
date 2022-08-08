@@ -56,8 +56,8 @@ export default function Today() {
         })
     }
 
+    let index = dayjs().day();
     
-
     return (
         <>
             <Header image={image}/>
@@ -65,7 +65,7 @@ export default function Today() {
                 
 
                 <DayWeek>
-                    <span>{dayjs().format('dddd')}, {dayjs().format( 'DD/MM' )}</span>
+                    <span>{ week[index].dayWeek }, {dayjs().format( 'DD/MM' )}</span>
                     {done.length === 0 ?
                     <p>Nenhum hábito concluído ainda</p> 
                     : 
@@ -90,8 +90,10 @@ export default function Today() {
 }
 
 const Wrapper = styled.div`
-    height: 100vh;
+    min-height: 79vh;
+    height: 100%;
     background-color: #F2F2F2;
+    margin-bottom: 70px;
     padding-top: 70px;
 `
 

@@ -8,7 +8,6 @@ import UserContext from './components/contexts/UserContext';
 
 export default function Footer() {
     const { progress, setProgress } = useContext(UserContext);
-    console.log(progress);
 
     return (
         <FooterBar>

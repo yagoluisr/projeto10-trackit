@@ -19,9 +19,7 @@ export default function SmallHabit({name, habit, refresh, setRefresh}) {
         {id: 6, day: "S", selected: false}
     ]
 
-    
     const idHabit = habit.id;
-    //console.log(idHabit);
 
         const newWeek = week.map(d => {
             if(habit.days.includes(d.id)){
@@ -34,11 +32,15 @@ export default function SmallHabit({name, habit, refresh, setRefresh}) {
         })
 
         function deleteHabit() {
-            delHabit(idHabit, token)
-            .then( res => {
-                console.log(res.data);
-                setRefresh(!refresh);
+            const confirm = window.confirm('Deseja excluir esse hábito ?');
+            
+            if(confirm){
+                delHabit(idHabit, token)
+                .then( res => {
+                    console.log(res.data);
+                    setRefresh(!refresh);
             })
+            }
         }
         
     return (

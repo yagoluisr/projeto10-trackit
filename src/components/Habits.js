@@ -15,8 +15,7 @@ export default function Habits() {
     const [habits, setHabits] = useState([]);
     const [toggle, setToggle] = useState(false);
     const [refresh, setRefresh] = useState(true);
-
-    console.log(refresh);
+    const [save, setSave] = useState('');
 
     useEffect( () => {
         getHabits(token).then(res => {
@@ -44,7 +43,9 @@ export default function Habits() {
                         toggle={toggle} 
                         setToggle={setToggle} 
                         refresh={refresh} 
-                        setRefresh={setRefresh}/> 
+                        setRefresh={setRefresh}
+                        save={save}
+                        setSave={setSave}/> 
                     :
                     ''
                 }
@@ -110,11 +111,13 @@ const Add = styled.div`
 `
 
 const Container = styled.div`
-    height: 100vh;
+    min-height: 54vh;
+    height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 75px;
     padding-top: 30px;
     padding-bottom: 100px;
     background-color: #f2f2f2;

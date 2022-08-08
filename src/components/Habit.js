@@ -5,26 +5,42 @@ import UserContext from './contexts/UserContext';
 import { ThreeDots } from 'react-loader-spinner';
 
 
-
-export default function Habit({toggle, setToggle, refresh, setRefresh}) {
+export default function Habit({toggle, setToggle, refresh, setRefresh, save, setSave}) {
     const { token } = useContext(UserContext);
     const { week, setWeek } =  useContext(UserContext);
 
-    const [habitName, setHabitName] = useState('') 
+    const [habitName, setHabitName] = useState(save); 
     const [loading, setLoading] = useState(false);
+    console.log("Oi ANA !! ")
 
-    function select (id) {
-        const newWeek = week.map(d => {
-            if(id === d.id){
+    function select(id) {
+        if(!loading){
+            const newWeek = week.map(d => {
+                if(id === d.id){
+                    return {
+                        ...d,
+                        selected: !d.selected
+                    }
+                }
+                return d
+            })
+            setWeek(newWeek);
+        }
+    }
+
+    function resetWeek() {
+        const resetWeek = week.map(d => {
+            if(d.selected === true){
                 return {
                     ...d,
-                    selected: !d.selected
+                    selected: false
                 }
             }
             return d
         })
-        setWeek(newWeek);
+        setWeek(resetWeek);
     }
+    console.log(habitName);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -33,26 +49,35 @@ export default function Habit({toggle, setToggle, refresh, setRefresh}) {
             d.selected
         )).map(d => d.id)
            
-
-        const body = {
-            name: habitName,
-            days
+        if(days.length !== 0){
+            const body = {
+                name: habitName,
+                days
+            }
+            
+            postHabit(body, token).then( () => {
+                //console.log("res.data")
+                resetWeek();
+                setRefresh(!refresh)
+                setToggle(!toggle);
+                setSave('');
+            })
+            setLoading(!loading)
+        } else {
+            alert('Escolha ao menos um dia da semana.');
         }
-
-        postHabit(body, token).then( res => 
-            //console.log("res.data")
-            setRefresh(!refresh)
-        )
-        setToggle(!toggle);
-    }
+        
+        
+    }   
     
     
     return (
         <Container onSubmit={handleSubmit}>
 
             <input 
-                placeholder="nome do hábito" 
-                value={habitName} 
+                type="text"
+                placeholder="nome do hábito"
+                defaultValue={habitName}
                 onChange={(e) => setHabitName(e.target.value)} 
                 disabled={loading}
                 required
@@ -60,7 +85,7 @@ export default function Habit({toggle, setToggle, refresh, setRefresh}) {
 
             <ul>
                 {week.map(d => (
-                    <DaysWeek 
+                    <DaysWeek   
                         selected={d.selected} 
                         key={d.id} 
                         disabled={loading}
@@ -72,7 +97,7 @@ export default function Habit({toggle, setToggle, refresh, setRefresh}) {
             </ul>
 
             <Buttons>
-                <div onClick={ () => setToggle(!toggle) }>Cancelar</div>
+                <div onClick={ () => {setToggle(!toggle); setSave(habitName) }}>Cancelar</div>
 
                 <button disabled={loading}>
                     { !loading ? 
@@ -116,12 +141,16 @@ const Container = styled.form`
         font-weight: 400;
         font-size: 20px;
         line-height: 25px;
-        color: #DBDBDB;
+        color: #666666;
         padding-left: 12px;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
 
         
+    }
+
+    input::placeholder {
+        color: #DBDBDB;
     }
 `
 
