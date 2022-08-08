@@ -58,4 +58,4 @@ function postUnCheck(idHabit, token) {
     return promise;
 }
 
-export { register, login, postHabit, getHabits, delHabit, searchHabits, postCheck, postUnCheck};
+export { register, login, postHabit, getHabits, delHabit, searchHabits, postCheck, postUnCheck };

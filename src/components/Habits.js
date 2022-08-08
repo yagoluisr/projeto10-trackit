@@ -14,15 +14,18 @@ export default function Habits() {
 
     const [habits, setHabits] = useState([]);
     const [toggle, setToggle] = useState(false);
+    const [refresh, setRefresh] = useState(true);
+
+    console.log(refresh);
 
     useEffect( () => {
         getHabits(token).then(res => {
-            console.log(res.data);
+            console.log("oiiiiii");
             setHabits(res.data);
+            
         })        
-    }, [])
+    }, [refresh])
     
-
     return (
         <>
             <Header image={image}/>
@@ -35,13 +38,32 @@ export default function Habits() {
             </MyHabits>
 
             <Container>
-                {toggle ? <Habit toggle={toggle} setToggle={setToggle}/> : ''}
+                {
+                    toggle ? 
+                    <Habit 
+                        toggle={toggle} 
+                        setToggle={setToggle} 
+                        refresh={refresh} 
+                        setRefresh={setRefresh}/> 
+                    :
+                    ''
+                }
                 
                 {habits.map((habit) => (
-                    <SmallHabit key={habit.id} name={habit.name} days={habit.days} habit={habit} habits={habits}/>
+                    <SmallHabit 
+                        key={habit.id} 
+                        name={habit.name} 
+                        days={habit.days} 
+                        habit={habit} 
+                        habits={habits}
+                        refresh={refresh}
+                        setRefresh={setRefresh}/>
                 ))}
 
-                { habits.leng !== 0 ? '' : <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>  }
+                { habits.leng !== 0 ? 
+                '' 
+                : 
+                <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>  }
                     
             </Container>
 

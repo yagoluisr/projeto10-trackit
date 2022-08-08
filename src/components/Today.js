@@ -5,40 +5,45 @@ import { ReactComponent as Check } from './Assets/Check.svg';
 import { useContext, useEffect, useState } from "react";
 import UserContext from "./contexts/UserContext";
 import { postCheck, postUnCheck, searchHabits } from "./Services/Service";
+import * as dayjs from 'dayjs';
+
 
 
 export default function Today() {
     const { token } = useContext(UserContext);
     const { image } = useContext(UserContext);
+    const { progress, setProgress } = useContext(UserContext);
+    const { week, setWeek } = useContext(UserContext);
 
     const [habit, setHabit] = useState([])
-    //const [done, setDone] = useState([]);
+    const [refresh, setRefresh] = useState(false);
     
+    console.log(week);
 
     useEffect(() => {
         searchHabits(token)
         .then( res => {
-            console.log(res.data);
+            //console.log(res.data);
             setHabit(res.data)
         })
-    }, []);
+    }, [refresh]);
 
 
         const done = habit.filter(obj => (
             obj.done
         ))
         console.log(done);
-    
 
         let percentage = (done.length/habit.length)*100;
         let result = Math.ceil(percentage);
+        setProgress(result);
 
     function checkHabit(checkHabit, token) {
         console.log(checkHabit);
         postCheck(checkHabit, token)
         .then( () => {
-            console.log('CHECK !!');
             setHabit(habit);
+            setRefresh(!refresh)
         })
     }
 
@@ -47,32 +52,39 @@ export default function Today() {
         console.log(checkHabit);
         postUnCheck(checkHabit, token)
         .then( () => {
-            console.log('UNCHECK !!');
-            setHabit(habit);
+            setRefresh(!refresh)
         })
     }
 
+    
+
     return (
         <>
-        <Header image={image}/>
-        <Wrapper>
-            
+            <Header image={image}/>
+            <Wrapper>
+                
 
-            <DayWeek>
-                <span>Segunda, 17/05</span>
-                {done.length === 0 ? <p>Nenhum hábito concluído ainda</p> : <h6>{result}% dos hábitos concluídos</h6> }  
-            </DayWeek>
+                <DayWeek>
+                    <span>{dayjs().format('dddd')}, {dayjs().format( 'DD/MM' )}</span>
+                    {done.length === 0 ?
+                    <p>Nenhum hábito concluído ainda</p> 
+                    : 
+                    <h6>{progress}% dos hábitos concluídos</h6> }  
+                </DayWeek>
 
-            {habit.map(dayHabit => (
-                    <HabitDay habit={dayHabit.done} seq={dayHabit.currentSequence} record={dayHabit.highestSequence} key={dayHabit.id} >
-                        <span>{dayHabit.name}</span>
-                        <p>Sequência atual: <strong>{dayHabit.currentSequence} dias</strong></p>
-                        <p>Seu recorde: <strong>{dayHabit.highestSequence} dias</strong></p>
-                        <div onClick={ dayHabit.done ? (() => uncheck(dayHabit.id, token)) : () => checkHabit(dayHabit.id, token) }><Check /></div>
-                    </HabitDay>
-            ))}
-            <Footer />
-        </Wrapper>
+                {habit.map(dayHabit => (
+                        <HabitDay habit={dayHabit.done} seq={dayHabit.currentSequence} record={dayHabit.highestSequence} key={dayHabit.id} >
+                            <span>{dayHabit.name}</span>
+                            <p>Sequência atual: <strong>{dayHabit.currentSequence} dias</strong></p>
+                            <p>Seu recorde: <strong>{dayHabit.highestSequence} dias</strong></p>
+                            <div onClick={ dayHabit.done ? (
+                            () => uncheck(dayHabit.id, token)) 
+                            : 
+                            () => checkHabit(dayHabit.id, token)}><Check /></div>
+                        </HabitDay>
+                    ))}
+                <Footer />
+            </Wrapper>
         </>
     )
 }

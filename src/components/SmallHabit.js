@@ -6,7 +6,7 @@ import { delHabit } from './Services/Service';
 import UserContext from './contexts/UserContext';
 
 
-export default function SmallHabit({name, habit}) {
+export default function SmallHabit({name, habit, refresh, setRefresh}) {
     const { token } = useContext(UserContext);
 
     const week = [
@@ -37,6 +37,7 @@ export default function SmallHabit({name, habit}) {
             delHabit(idHabit, token)
             .then( res => {
                 console.log(res.data);
+                setRefresh(!refresh);
             })
         }
         

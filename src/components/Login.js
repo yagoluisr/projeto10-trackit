@@ -13,7 +13,7 @@ export default function Login() {
     const { image, setImage } = useContext(UserContext);
 
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState({
         email: '',

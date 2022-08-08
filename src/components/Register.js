@@ -8,7 +8,7 @@ import { ThreeDots } from 'react-loader-spinner';
 export default function Register() {
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState({
         email: '',

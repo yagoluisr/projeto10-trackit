@@ -1,23 +1,17 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { postHabit } from './Services/Service';
 import UserContext from './contexts/UserContext';
+import { ThreeDots } from 'react-loader-spinner';
 
 
-export default function Habit({toggle, setToggle}) {
+
+export default function Habit({toggle, setToggle, refresh, setRefresh}) {
     const { token } = useContext(UserContext);
+    const { week, setWeek } =  useContext(UserContext);
 
     const [habitName, setHabitName] = useState('') 
-
-    const [week, setWeek] = useState ([
-        {id: "0", day: "D", selected: false},
-        {id: "1", day: "S", selected: false},
-        {id: "2", day: "T", selected: false},
-        {id: "3", day: "Q", selected: false},
-        {id: "4", day: "Q", selected: false},
-        {id: "5", day: "S", selected: false},
-        {id: "6", day: "S", selected: false}
-    ])
+    const [loading, setLoading] = useState(false);
 
     function select (id) {
         const newWeek = week.map(d => {
@@ -46,28 +40,54 @@ export default function Habit({toggle, setToggle}) {
         }
 
         postHabit(body, token).then( res => 
-            console.log(res.data)
+            //console.log("res.data")
+            setRefresh(!refresh)
         )
-
         setToggle(!toggle);
-
     }
     
     
     return (
         <Container onSubmit={handleSubmit}>
 
-            <input placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)} required></input>
+            <input 
+                placeholder="nome do hábito" 
+                value={habitName} 
+                onChange={(e) => setHabitName(e.target.value)} 
+                disabled={loading}
+                required
+            ></input>
 
             <ul>
                 {week.map(d => (
-                    <DaysWeek selected={d.selected} key={d.id} onClick={() => select(d.id)}>{d.day}</DaysWeek>
+                    <DaysWeek 
+                        selected={d.selected} 
+                        key={d.id} 
+                        disabled={loading}
+                        onClick={() => select(d.id)}
+                        >
+                        {d.day}
+                    </DaysWeek>
                 ))}
             </ul>
 
             <Buttons>
                 <div onClick={ () => setToggle(!toggle) }>Cancelar</div>
-                <button>Salvar</button>
+
+                <button disabled={loading}>
+                    { !loading ? 
+                    'Salvar' 
+                    :
+                    <ThreeDots
+                        height = "50"
+                        width = "50"
+                        radius = "9"
+                        color = '#ffffff'
+                        ariaLabel = 'three-dots-loading'     
+                        wrapperStyle
+                        wrapperClass
+                    />}
+                </button>
             </Buttons>
         </Container>
     )
@@ -84,6 +104,10 @@ const Container = styled.form`
 
     ul {
         display: flex;
+        &:disabled {
+            background-color: #D4D4D4;
+            opacity: 0.7;
+        }
     }
 
     input {
@@ -96,6 +120,8 @@ const Container = styled.form`
         padding-left: 12px;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
+
+        
     }
 `
 
@@ -114,6 +140,10 @@ export const DaysWeek = styled.li`
         margin-right: 5px;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
+
+        &:disabled {
+            opacity: 0.5;
+        }
     
 `
 
@@ -147,5 +177,9 @@ const Buttons = styled.div`
         background: #52B6FF;
         border-radius: 5px;
         border: none;
+
+        &:disabled {
+            opacity: 0.7;
+        }
     }
 `
