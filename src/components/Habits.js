@@ -19,9 +19,7 @@ export default function Habits() {
 
     useEffect( () => {
         getHabits(token).then(res => {
-            console.log("oiiiiii");
             setHabits(res.data);
-            
         })        
     }, [refresh])
     

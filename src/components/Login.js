@@ -31,7 +31,6 @@ export default function Login() {
         setLoading(!loading);
         login(data)
         .then(res => {
-            console.log(res.data);
             setToken(res.data.token);
             setImage(res.data.image);
             navigate('/hoje')

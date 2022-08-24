@@ -37,7 +37,6 @@ export default function SmallHabit({name, habit, refresh, setRefresh}) {
             if(confirm){
                 delHabit(idHabit, token)
                 .then( res => {
-                    console.log(res.data);
                     setRefresh(!refresh);
             })
             }

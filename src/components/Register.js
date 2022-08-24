@@ -24,11 +24,9 @@ export default function Register() {
 
     function handleRegister (e) {
 		e.preventDefault();
-        console.log(data)
         setLoading(!loading);
         register(data)
         .then(res => {
-            console.log(res.data)
             navigate('/');
         })
         .catch(() => {

@@ -17,13 +17,10 @@ export default function Today() {
 
     const [habit, setHabit] = useState([])
     const [refresh, setRefresh] = useState(false);
-    
-    console.log(week);
 
     useEffect(() => {
         searchHabits(token)
         .then( res => {
-            //console.log(res.data);
             setHabit(res.data)
         })
     }, [refresh]);
@@ -32,14 +29,12 @@ export default function Today() {
         const done = habit.filter(obj => (
             obj.done
         ))
-        console.log(done);
 
         let percentage = (done.length/habit.length)*100;
         let result = Math.ceil(percentage);
         setProgress(result);
 
     function checkHabit(checkHabit, token) {
-        console.log(checkHabit);
         postCheck(checkHabit, token)
         .then( () => {
             setHabit(habit);
@@ -48,8 +43,6 @@ export default function Today() {
     }
 
     function uncheck(checkHabit, token) {
-        console.log(token);
-        console.log(checkHabit);
         postUnCheck(checkHabit, token)
         .then( () => {
             setRefresh(!refresh)

@@ -11,7 +11,6 @@ export default function Habit({toggle, setToggle, refresh, setRefresh, save, set
 
     const [habitName, setHabitName] = useState(save); 
     const [loading, setLoading] = useState(false);
-    console.log("Oi ANA !! ")
 
     function select(id) {
         if(!loading){
@@ -40,7 +39,6 @@ export default function Habit({toggle, setToggle, refresh, setRefresh, save, set
         })
         setWeek(resetWeek);
     }
-    console.log(habitName);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -56,7 +54,6 @@ export default function Habit({toggle, setToggle, refresh, setRefresh, save, set
             }
             
             postHabit(body, token).then( () => {
-                //console.log("res.data")
                 resetWeek();
                 setRefresh(!refresh)
                 setToggle(!toggle);
